@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="FFmpeg 是一个非常强大的开源工具，常用于处理视频和音频文件。">
+<meta property="og:title" content="FFmpeg">
+<meta property="og:description" content="FFmpeg 是一个非常强大的开源工具，常用于处理视频和音频文件。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://DuoBaoWa.github.io/GitBlog/post/FFmpeg.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
+<title>FFmpeg</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">FFmpeg</h1>
+<div class="title-right">
+    <a href="https://DuoBaoWa.github.io/GitBlog" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/DuoBaoWa/GitBlog/issues/6" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><p>FFmpeg 是一个非常强大的开源工具，常用于处理视频和音频文件。它支持转换格式、剪切视频、提取音频等多种功能。下面是一些 <strong>FFmpeg 常用功能</strong>：</p>
+<h3>1. <strong>视频格式转换</strong></h3>
+<p>将视频从一种格式转换为另一种格式。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 output.avi</pre></div>
+<p>这里，<code class="notranslate">input.mp4</code> 是输入文件，<code class="notranslate">output.avi</code> 是输出文件。</p>
+<h3>2. <strong>提取视频中的音频</strong></h3>
+<p>将视频中的音频提取为 MP3 格式。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vn -acodec mp3 output.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-vn</code> 表示不处理视频部分。</li>
+<li><code class="notranslate">-acodec mp3</code> 指定音频编码为 MP3。</li>
+</ul>
+<h3>3. <strong>提取视频封面（第一帧）</strong></h3>
+<p>从视频中提取封面图（第一帧）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -ss 00:00:01 -vframes 1 output.jpg</pre></div>
+<ul>
+<li><code class="notranslate">-ss</code> 指定从视频的某一时刻开始提取（这里是 1 秒）。</li>
+<li><code class="notranslate">-vframes 1</code> 表示提取 1 帧。</li>
+</ul>
+<h3>4. <strong>裁剪视频（截取部分时间段）</strong></h3>
+<p>裁剪视频，只保留指定的时间段。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -ss 00:01:00 -to 00:05:00 -c copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-ss</code> 指定开始时间。</li>
+<li><code class="notranslate">-to</code> 指定结束时间。</li>
+<li><code class="notranslate">-c copy</code> 表示复制流，不重新编码，保证速度和质量。</li>
+</ul>
+<h3>5. <strong>合并多个视频</strong></h3>
+<p>将多个视频文件合并为一个文件（要求所有视频格式、编码一致）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -f concat -safe 0 -i filelist.txt -c copy output.mp4</pre></div>
+<ul>
+<li>
+<pre class="notranslate"><code class="notranslate">filelist.txt
+</code></pre>
+<p>是包含视频文件路径的文本文件，格式如下：</p>
+<pre class="notranslate"><code class="notranslate">file 'video1.mp4'
+file 'video2.mp4'
+</code></pre>
+</li>
+</ul>
+<h3>6. <strong>压缩视频（调整视频大小）</strong></h3>
+<p>通过改变分辨率来压缩视频大小。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>scale=1280:720<span class="pl-pds">"</span></span> -c:a copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-vf "scale=1280:720"</code> 指定视频的输出分辨率。</li>
+</ul>
+<h3>7. <strong>添加水印（图片或文字）</strong></h3>
+<p>在视频上添加图片水印。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i watermark.png -filter_complex <span class="pl-s"><span class="pl-pds">"</span>overlay=10:10<span class="pl-pds">"</span></span> -c:a copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-i watermark.png</code> 是水印图片。</li>
+<li><code class="notranslate">overlay=10:10</code> 设置水印的位置，左上角偏移 10px。</li>
+</ul>
+<h3>8. <strong>调整视频帧率</strong></h3>
+<p>更改视频的帧率（例如将视频的帧率设置为 30fps）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -r 30 output.mp4</pre></div>
+<h3>9. <strong>视频转GIF</strong></h3>
+<p>将视频转换为 GIF 动图。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>fps=10,scale=320:-1:flags=lanczos<span class="pl-pds">"</span></span> output.gif</pre></div>
+<ul>
+<li><code class="notranslate">fps=10</code> 设置 GIF 的帧率。</li>
+<li><code class="notranslate">scale=320:-1</code> 保持宽度为 320px，自动计算高度，<code class="notranslate">-1</code> 代表自动调整。</li>
+</ul>
+<h3>10. <strong>提取视频的音频并设置比特率</strong></h3>
+<p>提取音频并设置比特率（例如 128kbps）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vn -acodec mp3 -ab 128k output.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-ab 128k</code> 设置比特率为 128kbps。</li>
+</ul>
+<h3>11. <strong>调整视频速度（快放或慢放）</strong></h3>
+<p>将视频速度加快 2 倍。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -filter:v <span class="pl-s"><span class="pl-pds">"</span>setpts=0.5*PTS<span class="pl-pds">"</span></span> output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">setpts=0.5*PTS</code> 将视频速度加快两倍（0.5 表示加速）。</li>
+</ul>
+<h3>12. <strong>添加字幕</strong></h3>
+<p>在视频中添加字幕文件。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i subtitle.srt -c:v copy -c:a copy -c:s srt output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-i subtitle.srt</code> 是字幕文件。</li>
+</ul>
+<h3>13. <strong>查看视频信息</strong></h3>
+<p>查看视频文件的详细信息（包括时长、分辨率、编码等）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4</pre></div>
+<p>输出将包括视频流和音频流的详细信息。</p>
+<h3>14. <strong>将视频转换为小片段（按时间切割）</strong></h3>
+<p>从视频中提取指定时间段的小片段。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -ss 00:02:00 -t 00:01:00 -c copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-ss</code> 是起始时间。</li>
+<li><code class="notranslate">-t</code> 是持续时间。</li>
+</ul>
+<h3>15. <strong>音频视频同步</strong></h3>
+<p>如果音频和视频不同步，可以通过调整音频延迟来同步它们。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -itsoffset 00:00:02 -i input.mp4 -map 0:v -map 1:a -c:v copy -c:a aac output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-itsoffset 00:00:02</code> 将音频延迟 2 秒来同步。</li>
+</ul>
+<p>以下是更多 <strong>FFmpeg 常用功能</strong>，进一步展示 FFmpeg 在音视频处理中的强大功能：</p>
+<h3>16. <strong>调整音频音量</strong></h3>
+<p>增加或减少音频的音量。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -filter:a <span class="pl-s"><span class="pl-pds">"</span>volume=1.5<span class="pl-pds">"</span></span> output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">volume=1.5</code> 表示音量增大 1.5 倍。如果设置为 <code class="notranslate">0.5</code>，则音量减小至原来的 50%。</li>
+</ul>
+<h3>17. <strong>视频转码并调整质量</strong></h3>
+<p>通过设置视频编码器和 CRF（Constant Rate Factor，常量质量因子）来控制输出视频的质量，CRF 值越低，质量越高（同时文件也越大）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -c:v libx264 -crf 23 output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-c:v libx264</code> 使用 H.264 编码器。</li>
+<li><code class="notranslate">-crf 23</code> 设置质量，范围是 0 到 51，默认值是 23，值越小质量越好。</li>
+</ul>
+<h3>18. <strong>合并音频和视频</strong></h3>
+<p>将视频和音频文件合并为一个文件。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i video.mp4 -i audio.mp3 -c:v copy -c:a aac -strict experimental output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-c:v copy</code> 表示视频流不重新编码。</li>
+<li><code class="notranslate">-c:a aac</code> 使用 AAC 编码器来处理音频。</li>
+</ul>
+<h3>19. <strong>提取视频特定时段的截图</strong></h3>
+<p>从视频中截取某一时段的截图。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -ss 00:01:30 -vframes 1 output.jpg</pre></div>
+<ul>
+<li><code class="notranslate">-ss 00:01:30</code> 从 1 分 30 秒开始提取。</li>
+<li><code class="notranslate">-vframes 1</code> 提取 1 帧。</li>
+</ul>
+<h3>20. <strong>将视频转为黑白</strong></h3>
+<p>将视频转换为黑白模式。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf hue=s=0 output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">hue=s=0</code> 将饱和度（saturation）设置为 0，达到黑白效果。</li>
+</ul>
+<h3>21. <strong>视频翻转</strong></h3>
+<p>将视频上下翻转或左右翻转。</p>
+<ul>
+<li>
+<p>上下翻转：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>vflip<span class="pl-pds">"</span></span> output.mp4</pre></div>
+</li>
+<li>
+<p>左右翻转：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>hflip<span class="pl-pds">"</span></span> output.mp4</pre></div>
+</li>
+</ul>
+<h3>22. <strong>将多个音频合并为一个文件</strong></h3>
+<p>将多个音频文件合并成一个文件。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i <span class="pl-s"><span class="pl-pds">"</span>concat:audio1.mp3|audio2.mp3<span class="pl-pds">"</span></span> -acodec copy output.mp3</pre></div>
+<ul>
+<li><code class="notranslate">concat:</code> 用于连接音频文件。</li>
+</ul>
+<h3>23. <strong>将视频帧提取为图片</strong></h3>
+<p>从视频中提取多帧图片（例如每 10 帧提取一张图片）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>fps=1<span class="pl-pds">"</span></span> output%d.png</pre></div>
+<ul>
+<li><code class="notranslate">fps=1</code> 表示每秒提取一帧。</li>
+<li><code class="notranslate">output%d.png</code> 会生成按数字命名的图片文件。</li>
+</ul>
+<h3>24. <strong>为视频添加背景音乐</strong></h3>
+<p>将音频文件添加为视频的背景音乐。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i background_music.mp3 -c:v copy -c:a aac -strict experimental output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-i input.mp4</code> 是原始视频文件。</li>
+<li><code class="notranslate">-i background_music.mp3</code> 是背景音乐文件。</li>
+<li><code class="notranslate">-c:a aac</code> 使用 AAC 编码器进行音频编码。</li>
+</ul>
+<h3>25. <strong>视频和音频格式转换</strong></h3>
+<p>将视频文件的音频部分转换为不同的格式，并保存为新的视频文件。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vn -acodec libmp3lame output.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-vn</code> 不处理视频部分。</li>
+<li><code class="notranslate">-acodec libmp3lame</code> 使用 MP3 编码器处理音频。</li>
+</ul>
+<h3>26. <strong>视频加速或减速</strong></h3>
+<p>改变视频播放速度。通过修改 <code class="notranslate">setpts</code> 和音频的 <code class="notranslate">atempo</code> 来调整速度。</p>
+<ul>
+<li>
+<p>加速视频播放（例如 2 倍速）：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -filter:v <span class="pl-s"><span class="pl-pds">"</span>setpts=0.5*PTS<span class="pl-pds">"</span></span> -filter:a <span class="pl-s"><span class="pl-pds">"</span>atempo=2<span class="pl-pds">"</span></span> output.mp4</pre></div>
+</li>
+<li>
+<p>减慢视频播放（例如 0.5 倍速）：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -filter:v <span class="pl-s"><span class="pl-pds">"</span>setpts=2.0*PTS<span class="pl-pds">"</span></span> -filter:a <span class="pl-s"><span class="pl-pds">"</span>atempo=0.5<span class="pl-pds">"</span></span> output.mp4</pre></div>
+</li>
+</ul>
+<h3>27. <strong>去除视频中的音频</strong></h3>
+<p>从视频中移除音频部分，只保留视频。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -an output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-an</code> 表示不处理音频部分。</li>
+</ul>
+<h3>28. <strong>调整视频的音频轨道</strong></h3>
+<p>如果视频文件有多个音频轨道，可以选择合并其中一个音频轨道。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -map 0:v -map 0:a:1 -c copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-map 0:v</code> 选择视频流。</li>
+<li><code class="notranslate">-map 0:a:1</code> 选择第二个音频轨道（假设音频轨道从 0 开始计数）。</li>
+</ul>
+<h3>29. <strong>提取视频的封面（ID3 标签）</strong></h3>
+<p>从视频文件的元数据中提取封面图片。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -an -vn -f image2 output.jpg</pre></div>
+<ul>
+<li><code class="notranslate">-an</code> 忽略音频流。</li>
+<li><code class="notranslate">-vn</code> 忽略视频流。</li>
+</ul>
+<h3>30. <strong>视频旋转</strong></h3>
+<p>对视频进行旋转，常用于修正视频的方向。</p>
+<ul>
+<li>
+<p>旋转 90 度：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>transpose=1<span class="pl-pds">"</span></span> output.mp4</pre></div>
+</li>
+<li>
+<p><code class="notranslate">transpose=1</code> 旋转 90 度顺时针。</p>
+</li>
+<li>
+<p>旋转 180 度：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>transpose=2,transpose=2<span class="pl-pds">"</span></span> output.mp4</pre></div>
+</li>
+</ul>
+<p>以下是更多 <strong>FFmpeg 的实用功能和高级用法</strong>：</p>
+<hr>
+<h3>31. <strong>改变音频采样率</strong></h3>
+<p>调整音频的采样率（例如从 48kHz 转为 44.1kHz）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp3 -ar 44100 output.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-ar 44100</code> 设置采样率为 44.1kHz。</li>
+</ul>
+<hr>
+<h3>32. <strong>调整视频的码率</strong></h3>
+<p>通过改变码率来控制视频文件的大小和质量。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -b:v 1000k output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-b:v 1000k</code> 设置视频比特率为 1000kbps。</li>
+</ul>
+<hr>
+<h3>33. <strong>音频降噪</strong></h3>
+<p>对音频文件进行简单的降噪处理。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i noisy_audio.mp3 -af <span class="pl-s"><span class="pl-pds">"</span>highpass=f=200, lowpass=f=3000<span class="pl-pds">"</span></span> clean_audio.mp3</pre></div>
+<ul>
+<li><code class="notranslate">highpass</code> 和 <code class="notranslate">lowpass</code> 滤波器可以移除音频中的低频和高频噪声。</li>
+</ul>
+<hr>
+<h3>34. <strong>在视频上添加文字</strong></h3>
+<p>在视频上添加静态文字。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>drawtext=text='Hello World':fontcolor=white:fontsize=24:x=10:y=10<span class="pl-pds">"</span></span> output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">drawtext</code> 滤镜用于添加文本。</li>
+<li><code class="notranslate">x=10:y=10</code> 设置文本位置。</li>
+</ul>
+<hr>
+<h3>35. <strong>多线程加速编码</strong></h3>
+<p>指定使用多个线程来加速处理。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -c:v libx264 -threads 4 output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-threads 4</code> 表示使用 4 个线程。</li>
+</ul>
+<hr>
+<h3>36. <strong>生成缩略图序列</strong></h3>
+<p>从视频中按固定间隔生成多个缩略图。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>fps=1<span class="pl-pds">"</span></span> thumbnail_%03d.jpg</pre></div>
+<ul>
+<li><code class="notranslate">fps=1</code> 表示每秒提取一帧。</li>
+<li><code class="notranslate">thumbnail_%03d.jpg</code> 生成按序编号的图片。</li>
+</ul>
+<hr>
+<h3>37. <strong>更改视频分辨率</strong></h3>
+<p>调整视频分辨率。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>scale=1920:1080<span class="pl-pds">"</span></span> output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">scale=1920:1080</code> 设置分辨率为 1920x1080。</li>
+</ul>
+<hr>
+<h3>38. <strong>调整音频通道</strong></h3>
+<p>将立体声音频（双声道）转换为单声道。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i stereo.mp3 -ac 1 mono.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-ac 1</code> 将音频通道数设置为 1（单声道）。</li>
+</ul>
+<hr>
+<h3>39. <strong>提取视频元数据</strong></h3>
+<p>提取视频文件的元数据并显示详细信息。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -f ffmetadata metadata.txt</pre></div>
+<ul>
+<li>输出的 <code class="notranslate">metadata.txt</code> 包含视频的详细元数据信息。</li>
+</ul>
+<hr>
+<h3>40. <strong>循环播放音频</strong></h3>
+<p>将音频文件循环播放指定次数。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -stream_loop 2 -i input.mp3 -c copy output.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-stream_loop 2</code> 表示循环播放两次。</li>
+</ul>
+<hr>
+<h3>41. <strong>截取视频最后几秒</strong></h3>
+<p>提取视频的最后 10 秒。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -sseof -10 -i input.mp4 -c copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-sseof -10</code> 表示从视频结尾倒数 10 秒开始。</li>
+</ul>
+<hr>
+<h3>42. <strong>移除视频文件的元数据</strong></h3>
+<p>清除视频文件的所有元数据信息。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -map_metadata -1 -c:v copy -c:a copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-map_metadata -1</code> 删除所有元数据。</li>
+</ul>
+<hr>
+<h3>43. <strong>创建视频幻灯片</strong></h3>
+<p>将一系列图片转换为视频。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -framerate 1 -i img%d.jpg -c:v libx264 -pix_fmt yuv420p slideshow.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-framerate 1</code> 表示每秒播放一张图片。</li>
+<li><code class="notranslate">img%d.jpg</code> 表示图片按序编号。</li>
+</ul>
+<hr>
+<h3>44. <strong>动态模糊视频</strong></h3>
+<p>为视频添加动态模糊效果。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>boxblur=10:1<span class="pl-pds">"</span></span> output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">boxblur=10:1</code> 设置模糊半径和强度。</li>
+</ul>
+<hr>
+<h3>45. <strong>添加背景颜色</strong></h3>
+<p>为视频添加背景颜色（通常用于竖屏视频的两侧）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>pad=ceil(iw/2)*2:ceil(ih*3/2):color=black<span class="pl-pds">"</span></span> output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">pad</code> 滤镜用于调整画布大小和填充背景颜色。</li>
+</ul>
+<hr>
+<h3>46. <strong>视频帧间去重</strong></h3>
+<p>移除重复的帧，压缩视频时长。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf mpdecimate -vsync vfr output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">mpdecimate</code> 用于去掉重复帧。</li>
+<li><code class="notranslate">-vsync vfr</code> 保持可变帧率。</li>
+</ul>
+<hr>
+<h3>47. <strong>视频实时流传输</strong></h3>
+<p>将视频以 RTMP 协议实时推流。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -re -i input.mp4 -c:v libx264 -f flv rtmp://server/live/stream_key</pre></div>
+<ul>
+<li><code class="notranslate">-f flv</code> 指定输出格式为 FLV（Flash 视频流）。</li>
+<li><code class="notranslate">rtmp://server/live/stream_key</code> 是推流地址。</li>
+</ul>
+<hr>
+<h3>48. <strong>视频分段切割</strong></h3>
+<p>将视频文件切割为多个小文件。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -f segment -segment_time 60 -c copy output%03d.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-segment_time 60</code> 每段视频的时长为 60 秒。</li>
+<li><code class="notranslate">output%03d.mp4</code> 输出文件按编号命名。</li>
+</ul>
+<hr>
+<h3>49. <strong>实时录屏</strong></h3>
+<p>通过 FFmpeg 录制屏幕内容。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -f gdigrab -i desktop -framerate 30 -c:v libx264 output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-f gdigrab</code> 是 Windows 下的屏幕捕获模式。</li>
+<li><code class="notranslate">desktop</code> 表示捕获整个屏幕。</li>
+</ul>
+<hr>
+<h3>50. <strong>将音频转换为波形图</strong></h3>
+<p>将音频生成一个波形图视频。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp3 -filter_complex <span class="pl-s"><span class="pl-pds">"</span>showwavespic=s=640x240<span class="pl-pds">"</span></span> -frames:v 1 waveform.png</pre></div>
+<ul>
+<li><code class="notranslate">showwavespic</code> 生成波形图片。</li>
+</ul>
+<hr>
+<h3>51. <strong>提取多路音频</strong></h3>
+<p>如果视频文件包含多条音轨，可以提取特定音轨。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -map 0:a:1 output_audio2.mp3</pre></div>
+<ul>
+<li><code class="notranslate">-map 0:a:1</code> 提取第二条音轨。</li>
+</ul>
+<hr>
+<h3>52. <strong>音视频同步修正</strong></h3>
+<p>修正音频和视频不同步的问题（手动设置延迟）。</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -itsoffset 0.5 -i input.mp4 -map 0:v -map 1:a -c copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-itsoffset 0.5</code> 将音频延迟 0.5 秒。</li>
+</ul>
+<hr>
+<h2><strong>一、烧录字幕（硬字幕）到视频中</strong></h2>
+<p>这种方法会将字幕直接渲染到视频画面中，无法关闭。</p>
+<h3><strong>步骤：</strong></h3>
+<ol>
+<li>
+<p><strong>准备字幕文件</strong>：确保您有与视频匹配的字幕文件，一般为SRT或ASS格式。</p>
+</li>
+<li>
+<p><strong>使用FFmpeg命令烧录字幕</strong>：</p>
+<p><strong>对于SRT字幕：</strong></p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf subtitles=subtitles.srt -c:a copy output.mp4</pre></div>
+<p><strong>对于ASS字幕：</strong></p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf ass=subtitles.ass -c:a copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">input.mp4</code>：您的原始视频文件。</li>
+<li><code class="notranslate">subtitles.srt</code>或<code class="notranslate">subtitles.ass</code>：您的字幕文件。</li>
+<li><code class="notranslate">-vf subtitles=subtitles.srt</code>或<code class="notranslate">-vf ass=subtitles.ass</code>：使用视频滤镜将字幕烧录到视频中。</li>
+<li><code class="notranslate">-c:a copy</code>：复制音频，不重新编码。</li>
+</ul>
+</li>
+</ol>
+<h3><strong>注意事项：</strong></h3>
+<ul>
+<li><strong>字幕编码</strong>：确保字幕文件的编码为UTF-8，无BOM头，避免出现乱码。</li>
+<li><strong>字体问题</strong>：对于ASS字幕，若涉及自定义字体，需确保播放设备支持，或将字体嵌入字幕文件。</li>
+</ul>
+<hr>
+<h2><strong>二、嵌入软字幕到视频中</strong></h2>
+<p>这种方法会将字幕作为独立的流嵌入视频文件，播放时可以选择开启或关闭字幕。</p>
+<h3><strong>步骤：</strong></h3>
+<ol>
+<li>
+<p><strong>准备字幕文件</strong>：SRT、ASS等格式均可。</p>
+</li>
+<li>
+<p><strong>选择合适的容器格式</strong>：</p>
+<ul>
+<li><strong>MKV容器</strong>：支持多种字幕格式，兼容性好。</li>
+<li><strong>MP4容器</strong>：支持的字幕格式有限，一般为mov_text。</li>
+</ul>
+</li>
+<li>
+<p><strong>将字幕嵌入MKV文件</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i subtitles.srt -c copy -c:s srt output.mkv</pre></div>
+<ul>
+<li><code class="notranslate">-c copy</code>：复制所有流，不重新编码。</li>
+<li><code class="notranslate">-c:s srt</code>：指定字幕编码格式为SRT。</li>
+</ul>
+</li>
+<li>
+<p><strong>将字幕嵌入MP4文件</strong>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i subtitles.srt -c copy -c:s mov_text output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">-c:s mov_text</code>：将字幕转换为MP4容器支持的mov_text格式。</li>
+</ul>
+</li>
+</ol>
+<h3><strong>注意事项：</strong></h3>
+<ul>
+<li><strong>播放器支持</strong>：并非所有播放器都支持MP4中的软字幕，MKV的兼容性更好。</li>
+<li><strong>字幕格式限制</strong>：MP4容器对字幕格式有限制，可能需要转换字幕格式。</li>
+</ul>
+<hr>
+<h2><strong>三、附加技巧</strong></h2>
+<h3><strong>1. 多语言字幕</strong></h3>
+<p>可以同时嵌入多条字幕轨道：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i english.srt -i chinese.srt -map 0 -map 1 -map 2 -c copy -c:s srt output.mkv</pre></div>
+<ul>
+<li><code class="notranslate">-map</code>参数用于指定流的映射。</li>
+</ul>
+<h3><strong>2. 指定字幕语言</strong></h3>
+<p>为字幕流添加语言标签：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -i subtitles.srt -c copy -c:s srt -metadata:s:s:0 language=eng output.mkv</pre></div>
+<ul>
+<li><code class="notranslate">-metadata:s:s:0 language=eng</code>：为第一个字幕流指定语言为英语。</li>
+</ul>
+<h3><strong>3. 字幕样式调整</strong></h3>
+<p>对于ASS字幕，可以自定义样式，或使用FFmpeg滤镜调整：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">ffmpeg -i input.mp4 -vf <span class="pl-s"><span class="pl-pds">"</span>ass=subtitles.ass:fontsdir=/path/to/fonts<span class="pl-pds">"</span></span> -c:a copy output.mp4</pre></div>
+<ul>
+<li><code class="notranslate">fontsdir</code>：指定字体文件所在目录。</li>
+</ul>
+<hr>
+<h2><strong>总结</strong></h2>
+<ul>
+<li><strong>硬字幕</strong>适用于希望字幕永久显示的情况，兼容性高，但无法关闭。</li>
+<li><strong>软字幕</strong>提供了灵活性，用户可以选择开启或关闭，但需要考虑播放器的支持情况。</li>
+<li><strong>容器格式</strong>：MKV容器对字幕支持更友好，推荐使用。</li>
+</ul>
+<p>希望以上方法能帮助您成功在视频中插入字幕！</p></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://DuoBaoWa.github.io/GitBlog">DuoBaoWa</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("02/19/2025"!=""){
+    var startSite=new Date("02/19/2025");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","DuoBaoWa/GitBlog");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+
+
+</html>
