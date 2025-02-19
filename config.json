@@ -1,6 +1,12 @@
 {
-    "title":"Blog Title",
-    "subTitle":"Blog description",
+    "title":"DuoBaoWa",
+    "subTitle":"时间裂成沙砾，光在影子的褶皱中蜕皮。",
     "avatarUrl":"https://github.githubassets.com/favicons/favicon.svg",
+    "startSite":"02/19/2025",
+    "needComment":1,
+    "i18n":"CN",
+    "UTC":8,
+    "urlMode":"pinyin",
+    "primerCSS":"<link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />",
     "GMEEK_VERSION":"last"
 }
